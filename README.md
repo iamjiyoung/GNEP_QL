@@ -1,53 +1,43 @@
-# GNEP
+# GNEP_QL
 
-## GNEP_QL
-Solve a Generalized Nash Equilibrium Problem (GNEP) with quasi-linear constraints.
-(This code was used to solve examples in https://arxiv.org/abs/2405.03926)
+This repository contains code for solving the Generalized Nash Equilibrium Problem (GNEP) with quasi-linear constraints, as described in [GNEP_QL](https://arxiv.org/abs/2405.03926) by Jiyoung Choi, Jiawang Nie, Xindong Tang, and Suhan Zhong.
 
-The quasi-linear constraint is given by A(i)x(i) >= b(x(-i)),
-where it is linear in x(i) but may be nonlinear in x(-i).
+The quasi-linear constraint is given by $A_i x_i \geq b_i(x_{-i})$, where it is linear in $x_i$ but may be nonlinear in $x_{-i}$. 
+ 
+This function requires [GloptiPoly](https://homepages.laas.fr/henrion/software/gloptipoly3/), [YALMIP](https://yalmip.github.io/), and [MOSEK](https://www.mosek.com/).
 
-This function requires GloptiPoly, Yalmip, and Mosek to be properly installed.
+## Input
 
-[INPUT]
-
-- n: A vector where the ith element corresponds to the dimensions of x(i).
+- __n__ : A vector where the ith element corresponds to the dimensions of $x_i$.
   
-- F: A vector where the ith element corresponds to the ith player's objective.
+- __F__ : A vector where the ith element corresponds to the ith player's objective.
   
-- A: A cell array where the ith cell corresponds to A(i).
+- __A__ : A cell array where the ith cell corresponds to $A_i$.
   
-- b: A cell array where the ith cell corresponds to b(x(-i)).
+- __b__ : A cell array where the ith cell corresponds to $b_i(x_{-i})$.
 
-[OUTPUT]
+## Output
 
-RESULT is a struct array with six fields. RESULT(j) contains results extracted from K_J for some J in P.
+__RESULT__ is a struct array with six fields. __RESULT(j)__ contains results extracted from $\mathcal{K}_J$ for some $J$ in $\mathcal{P}$.
 
-- J: The index J for K_J.
+- __J__ : The index $J$ for $\mathcal{K}_J$.
   
-- number_of_GNE: The number of Generalized Nash Equilibria (GNE) in K_J.
+- __number_of_GNE__ : The number of Generalized Nash Equilibria (GNE) in $\mathcal{K}_J$.
   
-- GNE: A matrix storing all GNEs in K_J. If there are no GNEs in K_J, this field is empty.
+- __GNE__ : A matrix storing all GNEs in $\mathcal{K}_J$. If there are no GNEs in $\mathcal{K}_J$, this field is empty.
   
-- KKT: A matrix storing all Karush-Kuhn-Tucker (KKT) points in K_J. If there are no KKT points in K_J, this field is empty.
+- __KKT__ : A matrix storing all Karush-Kuhn-Tucker (KKT) points in $\mathcal{K}_J$. If there are no KKT points in $\mathcal{K}_J$, this field is empty.
   
-- timeforJ: The computational time for K_J.
+- __timeforJ__ : The computational time for $\mathcal{K}_J$.
   
-- time: The accumulated time since executing GNEP_QL.
+- __time__: The accumulated time since executing __GNEP_QL__.
 
-[Option]
+## Option
 
-To get results for a specific K_J, use:
+To get results for a specific $\mathcal{K}_J$, use:
+```bash
+ RESULT = GNEP_QL(n,F,A,b,J)
+```
+Here, J is a cell array where J{i} indicates the working constraints for the ith player. Note that |J{i}| = n(i) based on the construction.
 
-   RESULT = GNEP_QL(n,F,A,b,J)
-   
-Here, J is a cell array where J{i} indicates the working constraints for the ith player.
-
-Note that |J{i}| = n(i) based on the construction.
-
-
-
-
-
-J. Choi, May 19, 2024
 
