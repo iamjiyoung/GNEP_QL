@@ -83,7 +83,7 @@ RESULT =
              time: 65.6816
 ```
 
-To get the GNEs, type __RESULT.GNE__.
+To get GNEs, type __RESULT.GNE__.
 ```bash
 >> RESULT.GNE
 
