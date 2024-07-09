@@ -3,14 +3,14 @@ function RESULT = GNEP_QL(varargin)
 %
 % Solve a Generalized Nash Equilibrium Problem (GNEP) with quasi-linear constraints.
 %
-% The quasi-linear constraint is given by A(i)x(i) >= b(x(-i)),
+% The quasi-linear constraint is given by A(i)x(i) >= b_i(x(-i)),
 % where it is linear in x(i) but may be nonlinear in x(-i).
 % 
 % <INPUT>
 % - n: A vector where the ith element corresponds to the dimensions of x(i).
 % - F: A vector where the ith element corresponds to the ith player's objective.
 % - A: A cell array where the ith cell corresponds to A(i).
-% - b: A cell array where the ith cell corresponds to b(x(-i)).
+% - b: A cell array where the ith cell corresponds to b_i(x(-i)).
 % 
 % <OUTPUT>
 % RESULT is a struct array with six fields. RESULT(j) contains results extracted from K_J for some J in P.
@@ -27,7 +27,7 @@ function RESULT = GNEP_QL(varargin)
 % Here, J is a cell array where J{i} indicates the working constraints for the ith player.
 % Note that |J{i}| = n(i) based on the construction.
 % 
-% This function requires GloptiPoly, Yalmip, and Mosek to be properly installed.
+% This function requires GloptiPoly, YALMIP, and MOSEK.
 % 
 % J. Choi, May 19, 2024
 
