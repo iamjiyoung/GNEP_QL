@@ -40,4 +40,78 @@ To get results for a specific $\mathcal{K}_J$, use:
 ```
 Here, J is a cell array where J{i} indicates the working constraints for the ith player. Note that |J{i}| = n(i) based on the construction.
 
+## Example
 
+Here is code for Example 6.5 when $J =$ (\{1,4\}, \{3,6\}).
+```bash
+N = 2;
+n = [2 2]; 
+definevar
+
+f(1) = x1(1)*x2(1)^3 + x1(2)*x2(2)^3 - x1(1)^2*x1(2)^2;
+f(2) = x2(2)*x2'*x2 - 2*x1(2)*x2(1) - x1(1)*x1(2)*x2(2);
+
+A{1} = [1     0
+        0    -2
+        3    -1
+       -4     3
+       -6    -5
+        0    -5];
+
+A{2} = [-2     0
+        -4     4
+        -2     7
+        -1     4
+        -3     4
+         2     1];
+
+B1 = [0     0     0
+     -1    -1     0
+     -2    -1    -1
+     -3    -2    -3
+     -1    -1    -2
+      0     1    -1];
+
+C1 = [0     0     0
+      0     1     0
+      0    -1     1
+      0     0     0
+      0     0     0
+      1     0     0];
+
+b{1} = B1*[1; x2] + C1*[x2(1)^2; x2(1)*x2(2); x2(2)^2];
+
+B2 = [0    -1    -1
+     -6     0    -1
+      4    -3    -3
+     -4     1    -3
+      3     0    -1
+     -1     0     0];
+
+C2 = [1    -1     0
+      0     1    -1
+     -1     0     0
+      0     1     0
+     -1     0     0
+      0     0     1];
+
+b{2} = B2*[1; x1] + C2*[x1(1)^2; x1(1)*x1(2); x1(2)^2];
+
+J{1} = [1 4]; J{2} = [3 6];
+
+RESULT = GNEP_QL(n,f,A,b,J)
+```
+
+The following is the result.
+```bash
+RESULT = 
+
+  struct with fields:
+
+                J: {[1 4]  [3 6]}
+    number_of_GNE: 1
+              GNE: [4×1 double]
+              KKT: [4×1 double]
+         timeforJ: 3.5629
+             time: 3.6315
+```
