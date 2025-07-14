@@ -10,7 +10,7 @@ This function requires [GloptiPoly](https://homepages.laas.fr/henrion/software/g
 
 - __n__ : A vector where the ith element corresponds to the dimensions of $x_i$.
   
-- __F__ : A vector where the ith element corresponds to the ith player's objective.
+- __F__ : A cell array where the ith element corresponds to the ith player's objective.
   
 - __A__ : A cell array where the ith cell corresponds to $A_i$.
   
