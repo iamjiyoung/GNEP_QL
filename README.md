@@ -44,9 +44,10 @@ Here, J is a cell array where J{i} indicates the working constraints for the ith
 
 Here is code for Example 6.2 when $J =$ (\{2,5,7,8\}, \{1,4,5,7\}).
 ```bash
-N = 2;
+syms x1 [4 1] real
+syms x2 [4 1] real
+
 n = [4 4]; 
-definevar
 
 f(1) = (x1(1)-1)^2 + x2(4)*(x1(2)-1)^2 + (x1(3)-1)^2 + (x1(4)-2)^2 + (sum(x2)-1)*sum(x1);
 f(2) = x1(1)*x2(1)^2 - x2(2) + x1(3)*(x2(3)-1)^2 + x1(4)*(x2(4)+1)^2;
@@ -80,8 +81,8 @@ RESULT =
     number_of_GNE: 5
               GNE: [8×5 double]
               KKT: [8×5 double]
-         timeforJ: 65.6378
-             time: 65.6816
+         timeforJ: 96.2829
+             time: 96.3820
 ```
 
 To get GNEs, type __RESULT.GNE__.
