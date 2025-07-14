@@ -1,35 +1,35 @@
 function RESULT = GNEP_QL(varargin)
-% RESULT = GNEP_QL(n,F,A,b)
 %
-% Solve a Generalized Nash Equilibrium Problem (GNEP) with quasi-linear constraints.
+% Solves a Generalized Nash Equilibrium Problem (GNEP) with quasi-linear constraints.
 %
-% The quasi-linear constraint is given by A(i)x(i) >= b_i(x(-i)),
-% where it is linear in x(i) but may be nonlinear in x(-i).
+% Each quasi-linear constraint takes the form A{i} * x{i} >= b_i(x{-i}),
+% where the constraint is linear in x{i} but may be nonlinear in x{-i}.
 % 
 % <INPUT>
-% - n: A vector where the ith element corresponds to the dimensions of x(i).
-% - F: A vector where the ith element corresponds to the ith player's objective.
-% - A: A cell array where the ith cell corresponds to A(i).
-% - b: A cell array where the ith cell corresponds to b_i(x(-i)).
+% - n: A vector where n(i) specifies the dimension of player i's decision variable x{i}.
+% - F: A vector where F(i) corresponds to player i's objective.
+% - A: A cell array where A{i} is the matrix defining the linear part of player i's constraint.
+% - b: A cell array where b{i} is a function handle representing the right-hand side b_i(x{-i}).
 % 
 % <OUTPUT>
-% RESULT is a struct array with six fields. RESULT(j) contains results extracted from K_J for some J in P.
-% - J: The index J for K_J.
-% - number_of_GNE: The number of Generalized Nash Equilibria (GNE) in K_J.
-% - GNE: A matrix storing all GNEs in K_J. If there are no GNEs in K_J, this field is empty.
-% - KKT: A matrix storing all Karush-Kuhn-Tucker (KKT) points in K_J. If there are no KKT points in K_J, this field is empty.
-% - timeforJ: The computational time for K_J.
-% - time: The accumulated time since executing GNEP_QL.
+% RESULT: A struct array. Each RESULT(j) contains information extracted from a feasible region K_J, for some J in the index set P.
+% Fields of RESULT(j) include:
+%   - J: The index set J defining the active constraints in K_J.
+%   - number_of_GNE: The number of Generalized Nash Equilibria (GNE) found in K_J.
+%   - GNE: A matrix where each row is a GNE in K_J. Empty if none are found.
+%   - KKT: A matrix where each row is a Karush-Kuhn-Tucker (KKT) point in K_J. Empty if none are found.
+%   - timeforJ: Computational time to solve for K_J.
+%   - time: Cumulative time elapsed since the start of GNEP_QL.
 % 
-% <Option>
-% To get results for a specific K_J, use:
-%    RESULT = GNEP_QL(n,F,A,b,J)
-% Here, J is a cell array where J{i} indicates the working constraints for the ith player.
-% Note that |J{i}| = n(i) based on the construction.
+% <OPTION>
+% To solve the problem for a specific K_J, use:
+%    RESULT = GNEP_QL(n, F, A, b, J)
+% where J is a cell array such that J{i} specifies the active constraints for player i. The length of J{i} must match n(i) according to the construction.
 % 
-% This function requires GloptiPoly, YALMIP, and MOSEK.
+% Dependencies: Requires GloptiPoly, YALMIP, and MOSEK.
 % 
 % J. Choi, May 19, 2024
+% J. Choi, May 18, 2025
 
 
 mset('yalmip',true)
@@ -42,9 +42,11 @@ definevar
 cut = defineind(n);
 
 % Define objective functions, constraints, and indices 
-F = varargin{2};
+for i = 1:length(varargin{2})
+    F(i) = sym2mpol(n, varargin{2}{i});
+    b{i} = sym2mpol(n, varargin{4}{i});
+end
 A = varargin{3};
-b = varargin{4};
 
 df = cell(1, N);
 J_all = cell(1, N);
@@ -170,7 +172,6 @@ while IN == 1
             PJ = msdp(min(FJ), KJ, k);
         catch
             fprintf('Inconsistent support inequality constraint, skipped.\n');
-            return
             sta = -1;
         end
         while sta == 0 && k <= k_max
@@ -209,7 +210,7 @@ while IN == 1
 
                     k = k0; sta1 = 0;
 
-                    while sta1 == 0
+                    while sta1 ~= 1 && k <= k_max
                         PP = msdp(min(f_xu-f_uu), KK, k);
                         [sta1, obj1(i)] = msol(PP);
                         k = k+1;
@@ -225,7 +226,7 @@ while IN == 1
             end
             Finding_all_GNE_in_KJ
             KJ = [KJ_initial;
-                 FJ >= subs(FJ, x, xJ) + delta];
+                FJ >= subs(FJ, x, xJ) + delta];
         else
             for i = 1:N
                 RESULT(dimofP).J{i} = J_all{i}(Ji_ind(i),:);
