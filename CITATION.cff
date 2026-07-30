@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated paper."
+title: "GNEP_QL"
+type: software
+authors:
+  - family-names: "Choi"
+    given-names: "Jiyoung"
+  - family-names: "Tang"
+    given-names: "Xindong"
+repository-code: "https://github.com/iamjiyoung/GNEP_QL"
+url: "https://github.com/iamjiyoung/GNEP_QL"
+preferred-citation:
+  type: article
+  title: "Generalized Nash equilibrium problems with quasi-linear constraints"
+  authors:
+    - family-names: "Choi"
+      given-names: "Jiyoung"
+    - family-names: "Nie"
+      given-names: "Jiawang"
+    - family-names: "Tang"
+      given-names: "Xindong"
+    - family-names: "Zhong"
+      given-names: "Suhan"
+  journal: "SIAM Journal on Optimization"
+  doi: "10.1137/24M1699395"
+  year: 2026
+  url: "https://doi.org/10.1137/24M1699395"
