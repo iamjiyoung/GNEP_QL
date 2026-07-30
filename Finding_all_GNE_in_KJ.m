@@ -1,4 +1,5 @@
-
+% J. Choi, May 18, 2025
+%
 delta = 0.5; in_max = 1; % If we find appropriate delta, in_max = 0
 
 while in_max == 1
