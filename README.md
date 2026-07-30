@@ -1,6 +1,6 @@
 # GNEP_QL
 
-This repository contains code for solving the Generalized Nash Equilibrium Problem (GNEP) with quasi-linear constraints, as described in [GNEP_QL](https://arxiv.org/abs/2405.03926) by Jiyoung Choi, Jiawang Nie, Xindong Tang, and Suhan Zhong.
+This repository contains code for solving the Generalized Nash Equilibrium Problem (GNEP) with quasi-linear constraints, as described in [GNEP_QL](https://epubs.siam.org/doi/10.1137/24M1699395) by Jiyoung Choi, Jiawang Nie, Xindong Tang, and Suhan Zhong.
 
 The quasi-linear constraint is given by $A_i x_i \geq b_i(x_{-i})$, where it is linear in $x_i$ but may be nonlinear in $x_{-i}$. 
  
